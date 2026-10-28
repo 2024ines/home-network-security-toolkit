@@ -59,7 +59,7 @@ Ines M. Kornelio, Strathmore University.
 
 ## Acknowledgements
 Built with Nmap, Wireshark, python-nmap, Matplotlib and Python's standard library.
-*(Optional, if your university requires it: Code and documentation were drafted with the assistance of an AI assistant (Claude, by Anthropic); the design decisions, testing and evaluation are the author's.)*
+
 
 ## Licence and citation
 MIT licence (see `LICENSE`). To cite, use the "Cite this repository" button on GitHub.
