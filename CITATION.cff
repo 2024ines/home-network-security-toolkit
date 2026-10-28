@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "Home Network Security Toolkit"
+type: software
+authors:
+  - family-names: "Kornelio"
+    given-names: "Ines M."
+version: "1.0.0"
+date-released: "2026-10-21"
+license: MIT
+repository-code: "https://github.com/2024ines/home-network-security-toolkit"
+abstract: "A Python-based home network security tool that combines Nmap and Wireshark and explains the results in plain language for non-technical users."
+keywords:
+  - network security
+  - Nmap
+  - Wireshark
+  - home network

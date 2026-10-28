@@ -1,0 +1,5 @@
+﻿[!!] Not running as administrator: Needed for live traffic capture and for reading device addresses (MAC). Close VS Code, then reopen it with right-click, Run as administrator.
+[OK] Nmap (device scanner) found: C:\Program Files (x86)\Nmap\nmap.EXE
+[OK] Wireshark (tshark) found: TShark (Wireshark) 4.6.9 (v4.6.9-0-g2d548b197c75).
+[OK] Npcap (packet capture driver) found: Good.
+[OK] 14 network connection(s) available: Local Area Connection* 7, Local Area Connection* 6, Local Area Connection* 5, WiFi, VMware Network Adapter VMnet8, VMware Network Adapter VMnet1, Local Area Connection* 14, Local Area Connection* 13, Ethernet 2, Adapter for loopback traffic capture, Ethernet, USBPcap1, USBPcap2, Event Tracing for Windows (ETW) reader

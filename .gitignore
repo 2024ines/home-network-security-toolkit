@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.idea/
+.vscode/
+
+# App data - NEVER commit real scan data (it contains your devices' MAC addresses)
+.hnst/
+*.db
+reports/
+*.pcap
+*.pcapng

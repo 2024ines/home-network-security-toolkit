@@ -1,0 +1,126 @@
+﻿python : test_devices_without_mac_keyed_by_ip 
+(test_core.DatabaseTests.test_devices_without_mac_keyed_by_ip) ... ok
+At line:1 char:1
++ python -m unittest discover -s tests -v 2>&1 | Out-File -Encoding utf 
+...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (test_devices_wi...d_by_ip) 
+    ... ok:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+test_onboarding_and_offboarding 
+(test_core.DatabaseTests.test_onboarding_and_offboarding) ... ok
+test_self_is_trusted_and_trust_actions 
+(test_core.DatabaseTests.test_self_is_trusted_and_trust_actions) ... ok
+test_private_ok (test_core.NetworkValidation.test_private_ok) ... ok
+test_public_rejected (test_core.NetworkValidation.test_public_rejected) 
+... ok
+test_too_large_rejected 
+(test_core.NetworkValidation.test_too_large_rejected) ... ok
+test_parse_discovery (test_core.ParserTests.test_parse_discovery) ... ok
+test_parse_ports (test_core.ParserTests.test_parse_ports) ... ok
+test_closed_ports_ignored 
+(test_core.RiskTests.test_closed_ports_ignored) ... ok
+test_many_ports (test_core.RiskTests.test_many_ports) ... ok
+test_offline_devices_ignored 
+(test_core.RiskTests.test_offline_devices_ignored) ... ok
+test_score (test_core.RiskTests.test_score) ... ok
+test_telnet_is_critical (test_core.RiskTests.test_telnet_is_critical) 
+... ok
+test_unrecognised_device_flagged_cautiously 
+(test_core.RiskTests.test_unrecognised_device_flagged_cautiously) ... ok
+test_full_demo_flow (test_core.ServiceTests.test_full_demo_flow) ... ok
+test_public_network_blocked 
+(test_core.ServiceTests.test_public_network_blocked) ... ok
+test_quick_scan_warns (test_core.ServiceTests.test_quick_scan_warns) 
+... ok
+test_report_requires_scan 
+(test_core.ServiceTests.test_report_requires_scan) ... ok
+test_stop_flag (test_core.ServiceTests.test_stop_flag) ... ok
+test_traffic_and_report 
+(test_core.ServiceTests.test_traffic_and_report) ... <string>:2: 
+ResourceWarning: unclosed database in <sqlite3.Connection object at 
+0x00000171E9F7DA80>
+ResourceWarning: Enable tracemalloc to get the object allocation 
+traceback
+<string>:2: ResourceWarning: unclosed database in <sqlite3.Connection 
+object at 0x00000171EA222E30>
+ResourceWarning: Enable tracemalloc to get the object allocation 
+traceback
+<string>:2: ResourceWarning: unclosed database in <sqlite3.Connection 
+object at 0x00000171EA222F20>
+ResourceWarning: Enable tracemalloc to get the object allocation 
+traceback
+<string>:2: ResourceWarning: unclosed database in <sqlite3.Connection 
+object at 0x00000171EA223100>
+ResourceWarning: Enable tracemalloc to get the object allocation 
+traceback
+<string>:2: ResourceWarning: unclosed database in <sqlite3.Connection 
+object at 0x00000171EA223010>
+ResourceWarning: Enable tracemalloc to get the object allocation 
+traceback
+<string>:2: ResourceWarning: unclosed database in <sqlite3.Connection 
+object at 0x00000171EA2231F0>
+ResourceWarning: Enable tracemalloc to get the object allocation 
+traceback
+<string>:2: ResourceWarning: unclosed database in <sqlite3.Connection 
+object at 0x00000171EA2232E0>
+ResourceWarning: Enable tracemalloc to get the object allocation 
+traceback
+<string>:2: ResourceWarning: unclosed database in <sqlite3.Connection 
+object at 0x00000171EA2233D0>
+ResourceWarning: Enable tracemalloc to get the object allocation 
+traceback
+ok
+test_aggregator_and_rules 
+(test_core.TrafficTests.test_aggregator_and_rules) ... ok
+test_quiet_traffic_has_no_findings 
+(test_core.TrafficTests.test_quiet_traffic_has_no_findings) ... ok
+test_every_rule_has_plain_advice 
+(test_tshark.AdviceTests.test_every_rule_has_plain_advice) ... ok
+test_priority_and_fallback 
+(test_tshark.AdviceTests.test_priority_and_fallback) ... ok
+test_diagnose_never_crashes 
+(test_tshark.CaptureTests.test_diagnose_never_crashes) ... ok
+test_live_capture_counts_and_flags 
+(test_tshark.CaptureTests.test_live_capture_counts_and_flags) ... ok
+test_missing_wireshark 
+(test_tshark.CaptureTests.test_missing_wireshark) ... ok
+test_pcap_file (test_tshark.CaptureTests.test_pcap_file) ... ok
+test_permission_error_is_explained 
+(test_tshark.CaptureTests.test_permission_error_is_explained) ... ok
+test_explain_error (test_tshark.ParsingTests.test_explain_error) ... ok
+test_interfaces (test_tshark.ParsingTests.test_interfaces) ... ok
+test_parse_line (test_tshark.ParsingTests.test_parse_line) ... ok
+test_protocol_label (test_tshark.ParsingTests.test_protocol_label) ... 
+ok
+test_resolve_interface 
+(test_tshark.ParsingTests.test_resolve_interface) ... ok
+test_private_mac_and_brand 
+(test_web.ClassifyTests.test_private_mac_and_brand) ... ok
+test_types (test_web.ClassifyTests.test_types) ... ok
+test_busy_returns_409 (test_web.WebTests.test_busy_returns_409) ... ok
+test_findings_carry_plain_language_help 
+(test_web.WebTests.test_findings_carry_plain_language_help) ... ok
+test_page_has_token_and_no_placeholder 
+(test_web.WebTests.test_page_has_token_and_no_placeholder) ... ok
+test_scan_flow_and_actions 
+(test_web.WebTests.test_scan_flow_and_actions) ... ok
+test_security_checks (test_web.WebTests.test_security_checks) ... ok
+test_setup_check_endpoint (test_web.WebTests.test_setup_check_endpoint) 
+... ok
+test_stored_data_page_endpoint 
+(test_web.WebTests.test_stored_data_page_endpoint) ... ok
+test_traffic_and_report (test_web.WebTests.test_traffic_and_report) ... 
+C:\Projects\hnst_project\.venv\Lib\site-packages\matplotlib\_api\__init_
+_.py:137: ResourceWarning: unclosed database in <sqlite3.Connection 
+object at 0x00000171EA2234C0>
+  tuple(none_type if tp is None else tp for tp in types))
+ResourceWarning: Enable tracemalloc to get the object allocation 
+traceback
+ok
+
+----------------------------------------------------------------------
+Ran 44 tests in 8.044s
+
+OK

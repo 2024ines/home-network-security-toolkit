@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en" data-theme="rose" data-mode="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="token" content="__TOKEN__">
+<title>Home Network Security Toolkit</title>
+<style>
+:root{--r:18px;--shadow:0 8px 24px rgba(90,30,50,.08);font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif}
+html[data-theme=rose]{--primary:#db2777;--primary-d:#be185d;--side1:#831843;--side2:#be185d;--bgL:#fff5f8;--softL:#fce7f3}
+html[data-theme=cherry]{--primary:#dc2626;--primary-d:#b91c1c;--side1:#7f1d1d;--side2:#b91c1c;--bgL:#fff5f5;--softL:#fee2e2}
+html[data-theme=mocha]{--primary:#9a6240;--primary-d:#7a4b30;--side1:#3b2518;--side2:#6b4630;--bgL:#faf5f0;--softL:#f1e4d8}
+html[data-mode=light]{--bg:var(--bgL);--card:#fff;--text:#2b1d22;--muted:#7d6b72;--border:color-mix(in srgb,var(--primary) 14%,#fff);--soft:var(--softL);--row:#fffafc}
+html[data-mode=dark]{--bg:#150f11;--card:#211719;--text:#f7edf0;--muted:#b6a3aa;--border:#38282c;--soft:color-mix(in srgb,var(--primary) 24%,#211719);--row:#271c1f}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-size:14px}
+.hidden{display:none!important}
+#app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
+/* sidebar */
+.side{background:linear-gradient(170deg,var(--side1),var(--side2));color:#fff;padding:22px 14px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.brand{display:flex;gap:10px;align-items:center;margin:0 6px 26px}
+.logo{width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,.2);display:grid;place-items:center;font-size:23px}
+.brand b{display:block;font-size:15px;line-height:1.15}.brand small{opacity:.75;font-size:11px}
+.nav button{all:unset;box-sizing:border-box;width:100%;display:flex;gap:12px;align-items:center;padding:11px 14px;border-radius:12px;cursor:pointer;font-weight:600;opacity:.88;margin-bottom:4px}
+.nav button:hover{background:rgba(255,255,255,.14);opacity:1}
+.nav button:focus-visible,.btn:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid color-mix(in srgb,var(--primary) 45%,white);outline-offset:2px}
+.nav button.on{background:#fff;color:var(--primary-d);opacity:1;box-shadow:0 6px 16px rgba(0,0,0,.2)}
+.side-foot{margin-top:auto;font-size:12px;padding:0 6px}
+.swatches{display:flex;gap:9px;margin:8px 0 14px}
+.sw{width:24px;height:24px;border-radius:50%;border:2px solid rgba(255,255,255,.75);cursor:pointer;padding:0}
+.sw.on{box-shadow:0 0 0 3px rgba(255,255,255,.55)}
+.badge{display:inline-block;padding:3px 10px;border-radius:999px;font-weight:700;font-size:11px;background:rgba(255,255,255,.2)}
+.badge.demo{background:#fde68a;color:#7c2d12}
+/* top */
+main{padding:22px 28px 40px;min-width:0}
+.top{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-end;margin-bottom:18px}
+h1{margin:0;font-size:26px}.sub{color:var(--muted);margin-top:3px}
+.scanbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:var(--card);border:1px solid var(--border);padding:8px 10px;border-radius:16px;box-shadow:var(--shadow)}
+input[type=text],input[type=search],input:not([type]),select{border:1px solid var(--border);background:var(--card);color:var(--text);padding:9px 12px;border-radius:12px;font:inherit}
+#net{width:170px}
+.chk{display:flex;gap:6px;align-items:center;font-size:12.5px;color:var(--muted);max-width:230px;line-height:1.2}
+.btn{border:0;border-radius:12px;padding:10px 16px;font:inherit;font-weight:700;cursor:pointer;background:var(--soft);color:var(--primary-d);transition:.15s}
+.btn:hover{transform:translateY(-1px);filter:brightness(.97)}
+.btn.primary{background:linear-gradient(135deg,var(--primary),var(--primary-d));color:#fff;box-shadow:0 6px 14px color-mix(in srgb,var(--primary) 38%,transparent)}
+.btn.danger{background:#dc2626;color:#fff}
+.btn.ghost{background:transparent;border:1px solid var(--border);color:var(--text)}
+.btn.block{width:100%;margin-top:14px}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.job{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px 16px;margin-bottom:16px}
+.bar{height:8px;background:var(--border);border-radius:8px;overflow:hidden;margin-top:8px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--primary),var(--primary-d));width:0;transition:width .4s}
+/* cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:16px;margin-bottom:18px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px;box-shadow:var(--shadow)}
+.k{font-size:11px;letter-spacing:.08em;color:var(--muted);font-weight:700}
+.big{font-size:24px;font-weight:800;margin:6px 0 2px}.muted{color:var(--muted)}
+.split{height:9px;border-radius:9px;background:var(--border);margin:14px 0 8px;overflow:hidden}.split i{display:block;height:100%;background:var(--primary)}
+.legend{font-size:12.5px;color:var(--muted);display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block;background:var(--primary)}.dot.grey{background:var(--border);margin-left:8px}
+.seg{display:flex;gap:6px;margin:16px 0 8px}.seg i{flex:1;height:10px;border-radius:6px;background:var(--border)}
+.row2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-bottom:18px}
+h3{margin:0 0 4px;font-size:16px}.hint{color:var(--muted);font-size:12.5px;margin-bottom:12px}
+.hb{margin:10px 0}.hb div{display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px}.hb .track{height:9px;border-radius:8px;background:var(--border);overflow:hidden}.hb .track i{display:block;height:100%;border-radius:8px}
+.donutwrap{display:flex;gap:18px;align-items:center;flex-wrap:wrap}.donutwrap ul{list-style:none;margin:0;padding:0;flex:1;min-width:140px}.donutwrap li{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px solid var(--border);font-size:13px}
+/* toolbar & table */
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.toolbar input[type=search]{min-width:310px}
+.seg2{display:flex;border:1px solid var(--border);border-radius:12px;overflow:hidden}.seg2 button{border:0;background:var(--card);color:var(--text);padding:9px 14px;font:inherit;font-weight:600;cursor:pointer}.seg2 button.on{background:var(--primary);color:#fff}
+.chip{background:var(--soft);color:var(--primary-d);padding:8px 14px;border-radius:999px;font-weight:800}
+.tablewrap{background:var(--card);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:820px}
+th{text-align:left;font-size:11px;letter-spacing:.07em;color:var(--muted);padding:14px 14px;border-bottom:1px solid var(--border);text-transform:uppercase}
+td{padding:12px 14px;border-bottom:1px solid var(--border);vertical-align:middle}
+tbody tr:hover{background:var(--row)}
+.ty{display:flex;gap:10px;align-items:center;font-weight:600}.ic{width:36px;height:36px;border-radius:12px;background:var(--soft);display:grid;place-items:center;font-size:19px;flex:none}
+.mono{font-family:Consolas,monospace;font-size:12.5px}
+.pill{display:inline-block;padding:3px 11px;border-radius:999px;font-size:12px;font-weight:800;white-space:nowrap}
+.p-online,.p-secure{background:#dcfce7;color:#166534}.p-new,.p-review{background:#fef3c7;color:#92400e}.p-offline,.p-na{background:#e5e7eb;color:#4b5563}.p-risk{background:#fee2e2;color:#991b1b}
+html[data-mode=dark] .p-online,html[data-mode=dark] .p-secure{background:#14532d;color:#bbf7d0}html[data-mode=dark] .p-new,html[data-mode=dark] .p-review{background:#78350f;color:#fde68a}html[data-mode=dark] .p-offline,html[data-mode=dark] .p-na{background:#374151;color:#d1d5db}html[data-mode=dark] .p-risk{background:#7f1d1d;color:#fecaca}
+.sev{display:inline-block;padding:3px 10px;border-radius:8px;font-size:11px;font-weight:800;color:#fff;text-transform:uppercase}
+.s-critical{background:#991b1b}.s-high{background:#ef4444}.s-medium{background:#f59e0b}.s-low{background:#ca8a04}.s-info{background:#94a3b8}
+.dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.dcard{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;box-shadow:var(--shadow)}
+.dcard .meta{margin:10px 0;font-size:13px;color:var(--muted);line-height:1.6}
+.empty{padding:40px;text-align:center;color:var(--muted)}
+.find{background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:10px;box-shadow:var(--shadow)}
+.find summary{cursor:pointer;padding:14px 16px;display:flex;gap:12px;align-items:center;list-style:none}
+.find summary::-webkit-details-marker{display:none}.find .body{padding:0 16px 16px;line-height:1.55}
+.find .fix{background:var(--soft);border-radius:12px;padding:10px 14px;margin-top:10px}
+/* drawer */
+#veil{position:fixed;inset:0;background:rgba(20,5,12,.45);opacity:0;pointer-events:none;transition:.2s;z-index:40}#veil.on{opacity:1;pointer-events:auto}
+#drawer{position:fixed;top:0;right:0;height:100vh;width:min(440px,100vw);background:var(--card);z-index:50;transform:translateX(105%);transition:.25s;overflow:auto;padding:22px;box-shadow:-12px 0 40px rgba(0,0,0,.25)}#drawer.open{transform:none}
+.kv{display:grid;grid-template-columns:110px 1fr;gap:6px 10px;margin:14px 0;font-size:13.5px}.kv span:nth-child(odd){color:var(--muted)}
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);z-index:80;display:flex;flex-direction:column;gap:8px;align-items:center}
+.t{background:#2b1d22;color:#fff;padding:11px 18px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.3);max-width:520px}.t.bad{background:#b91c1c}.t.ok{background:#15803d}.t.warn{background:#b45309}
+footer{margin-top:28px;color:var(--muted);font-size:12px;line-height:1.5}
+/* alerts and plain-language help */
+.alert{display:flex;gap:14px;align-items:center;padding:16px 20px;border-radius:var(--r);margin-bottom:18px;font-weight:700;line-height:1.35;font-size:15px}
+.alert .ai{font-size:30px}.alert small{display:block;font-weight:400;opacity:.92;margin-top:3px;font-size:13px}
+.alert.bad{background:#fee2e2;color:#7f1d1d;border:1px solid #fecaca}.alert.warn{background:#fef3c7;color:#78350f;border:1px solid #fde68a}.alert.good{background:#dcfce7;color:#14532d;border:1px solid #bbf7d0}.alert.info{background:var(--soft);color:var(--text);border:1px solid var(--border)}
+html[data-mode=dark] .alert.bad{background:#450a0a;color:#fecaca;border-color:#7f1d1d}html[data-mode=dark] .alert.warn{background:#451a03;color:#fde68a;border-color:#78350f}html[data-mode=dark] .alert.good{background:#052e16;color:#bbf7d0;border-color:#14532d}
+.prio{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:800;background:#e0f2fe;color:#075985;white-space:nowrap}
+.prio.p1{background:#fee2e2;color:#991b1b}.prio.p2{background:#fef3c7;color:#92400e}.prio.p3{background:#e0f2fe;color:#075985}
+.what{margin:14px 0 4px;font-weight:800;color:var(--primary-d)}
+ol.steps{margin:6px 0 8px;padding-left:22px;line-height:1.75}
+.meta2{display:flex;gap:18px;flex-wrap:wrap;color:var(--muted);font-size:12.5px;margin-top:6px}
+.find .tech{margin-top:10px;box-shadow:none;border:0;background:transparent}.find .tech summary{padding:0;display:block;cursor:pointer;color:var(--muted);font-size:12.5px}.find .tech p{margin:6px 0 0;color:var(--muted);font-size:13px}
+.checks{list-style:none;margin:14px 0 6px;padding:0}.checks li{padding:8px 0;border-top:1px solid var(--border)}
+.gloss dt{font-weight:800;margin-top:10px}.gloss dd{margin:2px 0 0;color:var(--muted)}
+/* stored data */
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 14px}
+.tabs .btn.on{background:linear-gradient(135deg,var(--primary),var(--primary-d));color:#fff}
+.dtable td{font-family:Consolas,monospace;font-size:12.5px;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media(max-width:900px){#app{grid-template-columns:1fr}.side{position:static;height:auto}.nav{display:flex;flex-wrap:wrap;gap:4px}.nav button{width:auto}main{padding:16px}}
+@media print{.side,.scanbar,.toolbar,#drawer,#veil,.job,.btn,#toast{display:none!important}#app{display:block}body{background:#fff}.card,.tablewrap,.find{box-shadow:none}.page{display:block!important;page-break-inside:avoid}}
+.printall .page{display:block!important}
+</style>
+</head>
+<body>
+<div id="app">
+ <aside class="side">
+  <div class="brand"><div class="logo">🛡️</div><div><b>Home Network<br>Security Toolkit</b><small>Nmap + Wireshark</small></div></div>
+  <nav class="nav">
+   <button data-p="overview" class="on">🏠&nbsp; Overview</button>
+   <button data-p="devices">📱&nbsp; Devices</button>
+   <button data-p="findings">🛡️&nbsp; Findings</button>
+   <button data-p="traffic">📊&nbsp; Traffic</button>
+   <button data-p="history">🕒&nbsp; History</button>
+   <button data-p="data">🗄️&nbsp; Stored data</button>
+   <button data-act="export">📄&nbsp; Download report</button>
+   <button data-act="print">🖨️&nbsp; Export PDF</button>
+  </nav>
+  <div class="side-foot">
+   <div>Colour theme</div>
+   <div class="swatches">
+    <button class="sw" data-theme="rose" style="background:#f472b6" title="Rose" aria-label="Rose theme"></button>
+    <button class="sw" data-theme="cherry" style="background:#ef4444" title="Cherry" aria-label="Cherry theme"></button>
+    <button class="sw" data-theme="mocha" style="background:#a47148" title="Mocha" aria-label="Mocha theme"></button>
+   </div>
+   <button class="btn ghost" data-act="mask" id="maskBtn" style="color:#fff;border-color:rgba(255,255,255,.5);width:100%;margin-bottom:8px">🙈&nbsp; Hide MAC addresses</button>
+   <button class="btn ghost" data-act="dark" style="color:#fff;border-color:rgba(255,255,255,.5);width:100%;margin-bottom:12px">🌙&nbsp; Dark / light mode</button>
+   <span class="badge" id="modeBadge">LIVE</span> <span style="opacity:.7">v<span id="ver"></span></span>
+  </div>
+ </aside>
+ <main>
+  <header class="top">
+   <div><h1 id="title">Overview</h1><div class="sub" id="lastscan">No scan yet</div></div>
+   <div class="scanbar">
+    <input id="net" type="text" placeholder="192.168.1.0/24" aria-label="Network range to scan">
+    <label class="chk"><input type="checkbox" id="auth"> I own this network or am authorised to scan it</label>
+    <button class="btn primary" id="btnFull">🔍 Full scan</button>
+    <button class="btn ghost" id="btnQuick" title="Quick scan: finds devices only, no port checks">⚡</button>
+    <button class="btn danger hidden" id="btnStop">Stop</button>
+   </div>
+  </header>
+  <div id="job" class="job hidden"><div id="jobtxt"></div><div class="bar"><i id="jobbar"></i></div></div>
+
+  <section class="page" id="p-overview"></section>
+
+  <section class="page hidden" id="p-devices">
+   <div class="toolbar">
+    <input type="search" id="q" placeholder="Search by name, IP, MAC or type" aria-label="Search devices">
+    <select id="statusSel" aria-label="Filter by status">
+     <option value="all">All statuses</option><option value="online">Online (recognised)</option>
+     <option value="new">New / unrecognised</option><option value="offline">Not currently detected</option>
+     <option value="risk">Needs attention</option>
+    </select>
+    <div class="seg2"><button data-act="vtable" id="vt" class="on">☰ Table</button><button data-act="vcards" id="vc">▦ Cards</button></div>
+    <span class="chip" id="dcount">0 devices</span>
+    <button class="btn" data-act="trustall">✔ Mark all current as recognised</button>
+   </div>
+   <div id="dv-list"></div>
+   <p class="hint">Device type and icon are best guesses from the vendor, name and open ports. A device marked "New / unrecognised" may simply be a guest's phone: check before acting.</p>
+  </section>
+
+  <section class="page hidden" id="p-findings"></section>
+
+  <section class="page hidden" id="p-traffic">
+   <div class="card" style="margin-bottom:16px">
+    <h3>Traffic snapshot</h3>
+    <div class="hint">Optional. Needs Wireshark/tshark and administrator permission. Only packet headers (who talked to whom, protocol, size) are examined; message content is never read or stored.</div>
+    <div class="toolbar" style="margin:0">
+     <input id="iface" type="text" placeholder="Leave blank to choose automatically" style="min-width:260px" aria-label="Network connection (optional)">
+     <input id="secs" type="text" value="20" style="width:80px" aria-label="Seconds">
+     <button class="btn primary" data-act="capture">▶ Capture traffic</button>
+     <button class="btn" data-act="check">🩺 Check my setup</button>
+    </div>
+    <div id="chk"></div>
+   </div>
+   <div id="tr-res"></div>
+  </section>
+
+  <section class="page hidden" id="p-history"></section>
+
+  <section class="page hidden" id="p-data"></section>
+
+  <footer>Only scan networks you own or are authorised to assess. Findings are prompts for review, not proof of compromise: an open port or an unfamiliar device is often legitimate.</footer>
+ </main>
+</div>
+<div id="veil"></div><aside id="drawer" aria-label="Device details"></aside><div id="toast"></div>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const TOKEN=$('meta[name=token]').content;
+const SEV={critical:'#991b1b',high:'#ef4444',medium:'#f59e0b',low:'#ca8a04',info:'#94a3b8'};
+const PAGES={overview:'Overview',devices:'Devices',findings:'Findings',traffic:'Traffic',history:'History',data:'Stored data'};
+const RISKTXT={secure:'Looks OK',review:'Review',risk:'At risk',na:'-'};
+const PRESTXT={online:'Online',new:'New / unrecognised',offline:'Not detected'};
+let S=null,D=null,view={page:'overview',mode:'table',q:'',status:'all',sev:'low',open:null,tbl:'devices',hide:false},pollT=null,was=false;
+
+async function api(path,body){
+  const o={method:body?'POST':'GET',headers:{}};
+  if(body){o.headers['Content-Type']='application/json';o.headers['X-HNST-Token']=TOKEN;o.body=JSON.stringify(body)}
+  const r=await fetch(path,o);const j=await r.json().catch(()=>({}));
+  if(!r.ok)throw new Error(j.error||('Request failed ('+r.status+')'));return j;
+}
+function toast(m,k='ok'){const d=document.createElement('div');d.className='t '+k;d.textContent=m;$('#toast').appendChild(d);setTimeout(()=>d.remove(),k==='bad'?7000:4000)}
+function fmt(s){if(!s)return'-';const d=new Date(s.replace(' ','T')+'Z');return isNaN(d)?s:d.toLocaleString()}
+const MAC_RE=/^([0-9a-f]{2}:){5}[0-9a-f]{2}$/i;
+function maskMac(v){return view.hide&&typeof v==='string'&&MAC_RE.test(v)?v.slice(0,8)+':••:••:••':v}
+function syncMask(){const b=$('#maskBtn');if(b)b.innerHTML=view.hide?'🙈&nbsp; MAC addresses hidden':'🙈&nbsp; Hide MAC addresses'}
+async function loadData(){try{D=await api('/api/data');renderData()}catch(e){toast(e.message,'bad')}}
+async function refresh(){S=await api('/api/state');renderAll();if(view.page==='data')loadData()}
+async function act(path,body,ok){try{await api(path,body);await refresh();if(ok)toast(ok,'ok')}catch(e){toast(e.message,'bad')}}
+
+/* ---------- navigation, themes ---------- */
+function go(p){view.page=p;$$('.page').forEach(e=>e.classList.toggle('hidden',e.id!=='p-'+p));
+  $$('.nav button[data-p]').forEach(b=>b.classList.toggle('on',b.dataset.p===p));$('#title').textContent=PAGES[p];if(S)renderAll();if(p==='data')loadData()}
+function setTheme(t){document.documentElement.dataset.theme=t;$$('.sw').forEach(b=>b.classList.toggle('on',b.dataset.theme===t));try{localStorage.setItem('hnst-theme',t)}catch(e){}}
+function setMode(m){document.documentElement.dataset.mode=m;try{localStorage.setItem('hnst-mode',m)}catch(e){}}
+
+/* ---------- small chart helpers ---------- */
+function bars(map,colour){const m=Math.max(1,...Object.values(map));
+  const e=Object.entries(map);if(!e.length)return'<div class="empty">No data yet</div>';
+  return e.map(([k,v])=>`<div class="hb"><div><span>${esc(k)}</span><b>${v}</b></div><div class="track"><i style="width:${100*v/m}%;background:${colour(k)}"></i></div></div>`).join('')}
+const PAL=['#db2777','#f59e0b','#9a6240','#ef4444','#a855f7','#14b8a6','#64748b','#84cc16','#f97316'];
+function donut(map){const e=Object.entries(map),t=e.reduce((a,[,v])=>a+v,0);if(!t)return'<div class="empty">No data yet</div>';
+  let off=25,seg='';e.forEach(([k,v],i)=>{const p=100*v/t;seg+=`<circle r="15.915" cx="21" cy="21" fill="none" stroke="${PAL[i%PAL.length]}" stroke-width="6" stroke-dasharray="${p} ${100-p}" stroke-dashoffset="${off}"></circle>`;off-=p});
+  return`<div class="donutwrap"><svg width="150" height="150" viewBox="0 0 42 42" role="img" aria-label="Chart">${seg}<text x="21" y="22.5" text-anchor="middle" font-size="7" font-weight="800" fill="currentColor">${t}</text></svg><ul>${e.map(([k,v],i)=>`<li><span><span class="dot" style="background:${PAL[i%PAL.length]}"></span> ${esc(k)}</span><b>${v}</b></li>`).join('')}</ul></div>`}
+
+/* ---------- plain-language help ---------- */
+const PRIO_CLS=s=>s==='critical'||s==='high'?'p1':s==='medium'?'p2':'p3';
+function adviceHtml(f){return`<div class="what">What this means for you</div><div>${esc(f.simple)}</div>
+ <div class="what">What to do</div><ol class="steps">${(f.steps||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ol>
+ <div class="meta2"><span>⏱ ${esc(f.time)}</span><span>🧰 ${esc(f.skill)}</span></div>
+ <details class="tech"><summary>Technical details</summary><p>${esc(f.description)}</p></details>`}
+function findingHtml(f,open){return`<details class="find" ${open?'open':''}><summary><span class="sev s-${f.severity}">${f.severity}</span><span class="prio ${PRIO_CLS(f.severity)}">${esc(f.priority)}</span><b>${esc(f.title)}</b><span class="muted">${esc(f.device||'')}${f.port?' · port '+f.port:''}</span></summary><div class="body">${adviceHtml(f)}</div></details>`}
+const GLOSSARY=[['Router','The box from your internet provider that connects all your devices to the internet.'],
+ ['Open port','A "door" on a device that a program listens at. Some doors are needed, but unused open doors give attackers more ways in.'],
+ ['Firmware','The built-in software of a gadget such as a camera or router. Updating it fixes security holes.'],
+ ['MAC address','A device\'s unique hardware name. Many phones hide it behind a private address, so their brand shows as unknown.'],
+ ['Recognised device','A device you have checked and told the toolkit is yours.'],
+ ['Wi-Fi password','Changing it logs out everyone, including any unknown devices. You then reconnect only your own.'],
+ ['HTTPS / padlock','The secure version of a website. It scrambles information so others on the Wi-Fi cannot read it.']];
+
+/* ---------- pages ---------- */
+function renderTop(){
+  $('#ver').textContent=S.version;const b=$('#modeBadge');b.textContent=S.demo?'DEMO MODE':'LIVE';b.classList.toggle('demo',S.demo);
+  const sc=S.scan;$('#lastscan').textContent=sc?`Last scanned: ${fmt(sc.finished)}${sc.elapsed!=null?` (elapsed: ${sc.elapsed}s)`:''} · ${sc.network}`:'No scan yet. Tick the confirmation box and press Full scan.';
+  if(!$('#net').value)$('#net').value=S.network;if(S.demo&&!$('#auth').dataset.set){$('#auth').checked=true;$('#auth').dataset.set=1}
+}
+function renderOverview(){
+  const c=S.counts,sc=S.scan,score=sc?sc.score:null;
+  const n=score===null?0:score>=90?5:score>=70?4:score>=50?3:score>=30?2:1,cols=['#ef4444','#f97316','#f59e0b','#84cc16','#22c55e'];
+  const pct=c.total?Math.round(100*c.online/c.total):0;
+  const top=S.findings.filter(f=>f.severity!=='info').slice(0,3);
+  const serious=S.severity.critical+S.severity.high,mid=S.severity.medium;
+  const al=(k,i,t,sm)=>`<div class="alert ${k}"><span class="ai">${i}</span><div>${t}<small>${sm}</small></div></div>`;
+  const banner=!sc?al('info','👋','Welcome! Let us check your network.','Tick the confirmation box at the top and press <b>Full scan</b>. It takes a few minutes and changes nothing on your devices.')
+   :serious?al('bad','🚨',`${serious} serious problem${serious>1?'s':''} found: please act today`,'Start with the first item in your action plan below. Every step is explained in plain words.')
+   :c.new?al('warn','🔔',`${c.new} device${c.new>1?'s':''} need${c.new>1?'':'s'} your attention`,'Check whether you recognise them. Guests\' phones and new gadgets often appear here. Open <b>Devices</b> to review them.')
+   :mid?al('warn','🧹','A few things to tidy up','Nothing urgent, but the action plan below will make your network safer.')
+   :al('good','✅','Your network looks healthy','Scan again whenever you add new devices.');
+  $('#p-overview').innerHTML=`${banner}
+  <div class="cards">
+   <div class="card"><div class="k">CONNECTED DEVICES</div><div class="big">${c.online} online</div><div class="muted">${c.total} found, ${c.new} unrecognised</div>
+    <div class="split"><i style="width:${pct}%"></i></div><div class="legend"><span class="dot"></span>Online (${c.online})<span class="dot grey"></span>Offline (${c.offline})</div>
+    <button class="btn primary block" data-go="devices" data-filter="all">SEE ALL DEVICES</button></div>
+   <div class="card"><div class="k">SECURITY PROFILE</div><div class="big">${sc?esc(sc.grade.split(' - ')[0]):'No scan yet'}</div><div class="muted">${sc?`Score ${sc.score} / 100`:'Run a scan to see your score'}</div>
+    <div class="seg">${cols.map((x,i)=>`<i style="background:${i<n?x:''}"></i>`).join('')}</div><div class="legend" style="justify-content:space-between"><span>Unsafe</span><span>Secure</span></div>
+    <button class="btn primary block" data-go="findings">CHECK FINDINGS</button></div>
+   <div class="card"><div class="k">DEVICES TO REVIEW</div><div class="big">${c.new}</div><div class="muted">${c.new?'not yet marked as recognised':'everything online is recognised'}</div>
+    <div class="split"><i style="width:${c.online?Math.round(100*c.new/c.online):0}%;background:#f59e0b"></i></div><div class="legend">${c.online?Math.round(100*c.new/c.online):0}% of online devices</div>
+    <button class="btn primary block" data-go="devices" data-filter="new">REVIEW DEVICES</button></div>
+   <div class="card"><div class="k">OPEN PORTS FOUND</div><div class="big">${c.open_ports}</div><div class="muted">on ${c.devices_with_ports} device(s)</div>
+    <div class="split"><i style="width:${c.online?Math.round(100*c.devices_with_ports/c.online):0}%;background:#9a6240"></i></div><div class="legend">${S.severity.critical+S.severity.high} high-priority finding(s)</div>
+    <button class="btn primary block" data-go="findings">SEE DETAILS</button></div>
+  </div>
+  <div class="row2">
+   <div class="card"><h3>Devices by brand</h3><div class="hint">${c.online} online device(s)</div>${bars(S.brands,()=>'var(--primary)')}</div>
+   <div class="card"><h3>Devices by type</h3><div class="hint">Best guess from vendor, name and ports</div>${donut(S.types)}</div>
+   <div class="card"><h3>Findings by severity</h3><div class="hint">From the latest scan</div>${bars(Object.fromEntries(Object.entries(S.severity).filter(([,v])=>v>0)),k=>SEV[k])}</div>
+  </div>
+  <h3 style="margin:6px 0 4px">Your action plan</h3><div class="hint">Do these in order. Each one explains the problem in plain words and what to click.</div>
+  ${top.length?top.map((f,i)=>findingHtml(f,i===0)).join(''):`<div class="card empty">${sc?'Nothing urgent. Nice work!':'Run a scan to get your action plan.'}</div>`}
+  ${top.length?'<button class="btn" data-go="findings">See all findings</button>':''}
+  ${sc&&sc.warnings.length?`<div class="card" style="margin-top:16px;background:var(--soft)"><b>Notes</b><ul>${sc.warnings.map(w=>`<li>${esc(w)}</li>`).join('')}</ul></div>`:''}`;
+}
+function visible(){const q=view.q.toLowerCase();return S.devices.filter(d=>{
+  if(q&&!`${d.name} ${d.ip} ${d.mac} ${d.hostname} ${d.vendor} ${d.type}`.toLowerCase().includes(q))return false;
+  switch(view.status){case'online':return d.presence==='online';case'new':return d.presence==='new';case'offline':return d.presence==='offline';case'risk':return d.risk==='risk'||d.risk==='review';default:return true}})}
+function pills(d){return`<span class="pill p-${d.presence}">${PRESTXT[d.presence]}</span> <span class="pill p-${d.risk}">${RISKTXT[d.risk]}</span>`}
+function renderDevices(){
+  const list=visible();$('#dcount').textContent=`${list.length} device${list.length===1?'':'s'}`;$('#statusSel').value=view.status;
+  $('#vt').classList.toggle('on',view.mode==='table');$('#vc').classList.toggle('on',view.mode==='cards');
+  if(!list.length){$('#dv-list').innerHTML=`<div class="card empty">${S.devices.length?'No devices match your filter.':'No devices yet. Run a scan first.'}</div>`;return}
+  const ports=d=>d.ports.length?d.ports.map(p=>p.port).join(', '):'-';
+  $('#dv-list').innerHTML=view.mode==='table'?`<div class="tablewrap"><table><thead><tr><th>Device</th><th>IP address</th><th>MAC</th><th>Open ports</th><th>Status</th><th>Actions</th></tr></thead><tbody>${list.map(d=>`
+   <tr><td><div class="ty"><span class="ic">${d.icon}</span><div>${esc(d.name)}<div class="muted" style="font-weight:400;font-size:12px">${esc(d.type)}${d.vendor?' · '+esc(d.vendor):''}</div></div></div></td>
+   <td class="mono">${esc(d.ip)}</td><td class="mono">${esc(maskMac(d.mac))||'-'}${d.private_mac?' <span title="Private Wi-Fi address, so the brand cannot be identified">🔒</span>':''}</td><td>${esc(ports(d))}</td><td>${pills(d)}</td>
+   <td><button class="btn" data-dev="${d.id}">ⓘ Details</button></td></tr>`).join('')}</tbody></table></div>`
+  :`<div class="dgrid">${list.map(d=>`<div class="dcard"><div class="ty"><span class="ic">${d.icon}</span><div>${esc(d.name)}<div class="muted" style="font-weight:400;font-size:12px">${esc(d.type)}</div></div></div>
+   <div class="meta"><div class="mono">${esc(d.ip)}</div><div class="mono">${esc(maskMac(d.mac))||'-'}</div><div>Open ports: ${esc(ports(d))}</div></div>${pills(d)}<button class="btn block" data-dev="${d.id}">ⓘ Details</button></div>`).join('')}</div>`;
+}
+function renderFindings(){
+  const rank={info:0,low:1,medium:2,high:3,critical:4};
+  const chips=['info','low','medium','high','critical'].map(s=>`<button class="btn ${view.sev===s?'primary':''}" data-act="sev" data-v="${s}">${s} +</button>`).join(' ');
+  const list=S.findings.filter(f=>rank[f.severity]>=rank[view.sev]);
+  $('#p-findings').innerHTML=`<div class="toolbar"><span class="muted">Show severity:</span>${chips}</div>`+(list.length?list.map((f,i)=>findingHtml(f,false)).join(''):`<div class="card empty">${S.scan?'No findings at this level. Nice work!':'Run a scan to see findings.'}</div>`)
+   +`<details class="card gloss" style="margin-top:18px"><summary style="cursor:pointer;font-weight:800">📖 Plain-English glossary</summary><dl>${GLOSSARY.map(([a,b])=>`<dt>${esc(a)}</dt><dd>${esc(b)}</dd>`).join('')}</dl></details>`;
+}
+function renderTraffic(){
+  $('#p-traffic').querySelector('[data-act=capture]').disabled=false;
+  const t=S.traffic,el=$('#tr-res');
+  if(!t){el.innerHTML=`<div class="card empty">No traffic captured yet.${S.traffic_available?'':'<br>Traffic analysis is not available: install Wireshark.'}</div>`;return}
+  const s=t.summary,pc=Object.fromEntries(Object.entries(s.protocols).slice(0,8));
+  el.innerHTML=`<div class="cards"><div class="card"><div class="k">PACKETS</div><div class="big">${s.packets.toLocaleString()}</div><div class="muted">${esc(t.source)}</div></div>
+   <div class="card"><div class="k">DATA</div><div class="big">${(s.bytes/1024).toFixed(1)} KB</div><div class="muted">${esc(fmt(t.started))}</div></div>
+   <div class="card"><div class="k">ALERTS</div><div class="big">${(s.findings||[]).length}</div><div class="muted">unusual patterns</div></div></div>
+   <div class="row2"><div class="card"><h3>Protocols seen</h3>${donut(pc)}</div>
+   <div class="card"><h3>Top talkers</h3><div class="hint">Packets sent by each address</div>${bars(Object.fromEntries(s.top_talkers.map(x=>[x.ip,x.packets])),()=>'var(--primary)')}</div></div>
+   <div class="card"><h3>Observations</h3>${(s.findings||[]).length?s.findings.map(f=>`<div style="padding:12px 0;border-top:1px solid var(--border)"><span class="sev s-${f.severity}">${f.severity}</span> <span class="prio ${PRIO_CLS(f.severity)}">${esc(f.priority)}</span> <b>${esc(f.title)}</b> <span class="muted">${esc(f.device||'')}</span>${adviceHtml(f)}</div>`).join(''):'<div class="empty">No unusual patterns were seen.</div>'}</div>`;
+}
+function renderHistory(){
+  const h=S.history;if(!h.length){$('#p-history').innerHTML='<div class="card empty">No scans yet.</div>';return}
+  const W=680,H=190,P=30,n=h.length,x=i=>P+(n===1?(W-2*P)/2:i*(W-2*P)/(n-1)),y=v=>H-P-v/100*(H-2*P);
+  const path=h.map((p,i)=>`${i?'L':'M'}${x(i)},${y(p.score)}`).join(' ');
+  $('#p-history').innerHTML=`<div class="card" style="margin-bottom:16px"><h3>Security score over time</h3><div class="hint">Re-scan after each fix and watch the line rise.</div>
+   <svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Score history">${[0,50,100].map(v=>`<line x1="${P}" x2="${W-P}" y1="${y(v)}" y2="${y(v)}" stroke="var(--border)"/><text x="4" y="${y(v)+4}" font-size="10" fill="var(--muted)">${v}</text>`).join('')}
+   <path d="${path}" fill="none" stroke="var(--primary)" stroke-width="3"/>${h.map((p,i)=>`<circle cx="${x(i)}" cy="${y(p.score)}" r="5" fill="var(--primary)"><title>${esc(fmt(p.finished))}: ${p.score}</title></circle>`).join('')}</svg></div>
+   <div class="tablewrap"><table><thead><tr><th>Finished</th><th>Devices</th><th>Open ports</th><th>Score</th></tr></thead><tbody>${[...h].reverse().map(p=>`<tr><td>${esc(fmt(p.finished))}</td><td>${p.hosts}</td><td>${p.open_ports}</td><td><b>${p.score}</b></td></tr>`).join('')}</tbody></table></div>`;
+}
+function renderData(){
+  if(!D){$('#p-data').innerHTML='<div class="card empty">Loading ...</div>';return}
+  const cell=v=>v===null||v===undefined?'<span class="muted">-</span>':esc(maskMac(String(v)).replace(/^ip:/,'ip:'));
+  const cur=D.tables.find(t=>t.name===view.tbl)||D.tables[0];
+  const kb=D.size?(D.size/1024).toFixed(1)+' KB':'-';
+  $('#p-data').innerHTML=`<div class="card" style="margin-bottom:16px"><h3>Local SQLite database</h3>
+   <div class="hint">Read-only view of the data this toolkit has stored. It stays on this computer. Showing the latest ${D.limit} records of each table.</div>
+   <div class="mono" style="word-break:break-all">${esc(D.path)} &nbsp;·&nbsp; ${esc(kb)}</div></div>
+  <div class="cards">${D.tables.map(t=>`<div class="card"><div class="k">${esc(t.name.toUpperCase())}</div><div class="big">${t.count}</div><div class="muted">record${t.count===1?'':'s'}</div></div>`).join('')}</div>
+  <div class="tabs">${D.tables.map(t=>`<button class="btn ${t.name===cur.name?'on':''}" data-act="tbl" data-v="${t.name}">${esc(t.name)} (${t.count})</button>`).join('')}</div>
+  ${cur.rows.length?`<div class="tablewrap"><table class="dtable" style="min-width:0"><thead><tr>${cur.columns.map(c=>`<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>${cur.rows.map(r=>`<tr>${r.map(v=>`<td title="${esc(v)}">${cell(v)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`:'<div class="card empty">This table is empty. Run a scan to fill it.</div>'}`;
+}
+function renderDrawer(){
+  const d=S.devices.find(x=>x.id===view.open);if(!d){closeDrawer();return}
+  $('#drawer').innerHTML=`<button class="btn ghost" data-act="close" style="float:right">✕</button>
+   <div class="ty" style="font-size:18px"><span class="ic" style="width:52px;height:52px;font-size:28px">${d.icon}</span><div>${esc(d.name)}<div class="muted" style="font-weight:400;font-size:13px">${esc(d.type)}</div></div></div>
+   <div style="margin-top:12px">${pills(d)}</div>
+   <div class="kv"><span>IP address</span><span class="mono">${esc(d.ip)}</span><span>MAC</span><span class="mono">${esc(maskMac(d.mac))||'-'}</span><span>Vendor</span><span>${esc(d.vendor)||'Unknown'}${d.private_mac?' (private address)':''}</span><span>Hostname</span><span>${esc(d.hostname)||'-'}</span><span>OS guess</span><span>${esc(d.os)||'-'}</span><span>First seen</span><span>${esc(fmt(d.first_seen))}</span><span>Last seen</span><span>${esc(fmt(d.last_seen))}</span></div>
+   <h3>Name this device</h3><div class="toolbar"><input id="rn" type="text" maxlength="60" placeholder="e.g. Mum's phone" value="${esc(d.label)}"><button class="btn primary" data-act="rename">Save</button></div>
+   <div class="toolbar">${d.trusted?`<button class="btn" data-act="untrust">Mark as unrecognised</button>`:`<button class="btn primary" data-act="trust">✔ Mark as recognised</button>`}</div>
+   <h3>Open ports</h3>${d.ports.length?`<div class="tablewrap"><table style="min-width:0"><tbody>${d.ports.map(p=>`<tr><td class="mono">${p.port}/${esc(p.protocol)}</td><td>${esc(p.service)} ${esc(p.banner)}</td></tr>`).join('')}</tbody></table></div>`:'<div class="muted">None recorded in the latest scan.</div>'}
+   <h3 style="margin-top:18px">Findings</h3>${d.findings.length?d.findings.map(f=>`<div style="padding:12px 0;border-top:1px solid var(--border)"><span class="sev s-${f.severity}">${f.severity}</span> <span class="prio ${PRIO_CLS(f.severity)}">${esc(f.priority)}</span> <b>${esc(f.title)}</b>${adviceHtml(f)}</div>`).join(''):'<div class="muted">No findings for this device.</div>'}`;
+}
+function openDrawer(id){view.open=id;renderDrawer();$('#drawer').classList.add('open');$('#veil').classList.add('on')}
+function closeDrawer(){view.open=null;$('#drawer').classList.remove('open');$('#veil').classList.remove('on')}
+function renderAll(){renderTop();renderOverview();renderDevices();renderFindings();renderTraffic();renderHistory();if(view.open!==null)renderDrawer();showJob(S.job)}
+
+/* ---------- scan jobs ---------- */
+function showJob(j){const run=!!j.running;$('#job').classList.toggle('hidden',!run);$('#btnStop').classList.toggle('hidden',!run);
+  ['btnFull','btnQuick'].forEach(i=>$('#'+i).disabled=run);$$('[data-act=capture]').forEach(b=>b.disabled=run);
+  if(run){$('#jobtxt').textContent=j.message;$('#jobbar').style.width=Math.round(100*j.fraction)+'%'}}
+async function pollJob(){try{const j=await api('/api/job');showJob(j);if(j.running)was=true;
+  else if(was){was=false;clearInterval(pollT);pollT=null;await refresh();toast(j.error||j.message,j.error?'bad':'ok')}}catch(e){}}
+function startPolling(){was=true;if(!pollT)pollT=setInterval(pollJob,700);pollJob()}
+async function scan(deep){
+  if(!$('#auth').checked){toast('Please confirm that you own this network or are authorised to scan it.','warn');return}
+  try{await api('/api/scan',{network:$('#net').value,deep,authorised:true});startPolling()}catch(e){toast(e.message,'bad')}}
+
+/* ---------- clicks ---------- */
+const acts={
+  dark(){setMode(document.documentElement.dataset.mode==='dark'?'light':'dark')},
+  vtable(){view.mode='table';renderDevices()},vcards(){view.mode='cards';renderDevices()},
+  sev(t){view.sev=t.dataset.v;renderFindings()},close(){closeDrawer()},
+  export(){location.href='/api/report'},
+  print(){document.body.classList.add('printall');setTimeout(()=>{window.print();document.body.classList.remove('printall')},150)},
+  trustall(){if(confirm('Only do this if you have checked the list and recognise every online device.\n\nMark all online devices as recognised?'))act('/api/trust-all',{},'All online devices marked as recognised.')},
+  trust(){act(`/api/device/${view.open}/trust`,{trusted:true},'Marked as recognised.')},
+  untrust(){act(`/api/device/${view.open}/trust`,{trusted:false},'Marked as unrecognised.')},
+  tbl(t){view.tbl=t.dataset.v;renderData()},
+  mask(){view.hide=!view.hide;try{localStorage.setItem('hnst-hide',view.hide?'1':'0')}catch(e){}syncMask();if(S)renderAll();renderData()},
+  usei(t){$('#iface').value=t.dataset.v;toast('Connection selected: '+t.dataset.v,'ok')},
+  async check(){const el=$('#chk');el.innerHTML='<div class="muted" style="margin-top:12px">Checking your setup ...</div>';
+    try{const r=await api('/api/check');el.innerHTML=`<ul class="checks">${r.checks.map(c=>`<li>${c.ok?'✅':'❌'} <b>${esc(c.title)}</b><div class="muted">${esc(c.detail)}</div></li>`).join('')}</ul>${r.interfaces.length?`<div class="hint">Click a connection to use it:</div>${r.interfaces.map(i=>`<button class="btn" data-act="usei" data-v="${esc(i.name)}">${esc(i.name)}</button>`).join(' ')}`:''}`}catch(e){el.innerHTML='';toast(e.message,'bad')}},
+  rename(){act(`/api/device/${view.open}/rename`,{label:$('#rn').value},'Name saved.')},
+  async capture(){if(!$('#auth').checked){toast('Please confirm you are authorised first (tick the box at the top).','warn');return}
+    try{await api('/api/traffic',{interface:$('#iface').value,seconds:parseInt($('#secs').value)||20,authorised:true});startPolling()}catch(e){toast(e.message,'bad')}}
+};
+document.addEventListener('click',e=>{
+  const sw=e.target.closest('.sw');if(sw){setTheme(sw.dataset.theme);return}
+  const nav=e.target.closest('.nav button[data-p]');if(nav){go(nav.dataset.p);return}
+  const t=e.target.closest('[data-go],[data-dev],[data-act]');if(!t)return;
+  if(t.dataset.go){if(t.dataset.filter)view.status=t.dataset.filter;go(t.dataset.go)}
+  else if(t.dataset.dev)openDrawer(+t.dataset.dev);
+  else if(t.dataset.act&&acts[t.dataset.act])acts[t.dataset.act](t);
+});
+$('#veil').addEventListener('click',closeDrawer);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer()});
+$('#q').addEventListener('input',e=>{view.q=e.target.value;renderDevices()});
+$('#statusSel').addEventListener('change',e=>{view.status=e.target.value;renderDevices()});
+$('#btnFull').addEventListener('click',()=>scan(true));$('#btnQuick').addEventListener('click',()=>scan(false));
+$('#btnStop').addEventListener('click',()=>api('/api/stop',{}).then(()=>toast('Stopping after the current device ...','warn')).catch(e=>toast(e.message,'bad')));
+
+try{setTheme(localStorage.getItem('hnst-theme')||'rose');setMode(localStorage.getItem('hnst-mode')||'light');view.hide=localStorage.getItem('hnst-hide')==='1'}catch(e){setTheme('rose')}
+syncMask();
+refresh().then(()=>{if(S.job.running)startPolling()}).catch(e=>toast(e.message,'bad'));
+</script>
+</body>
+</html>
